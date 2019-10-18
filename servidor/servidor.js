@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
+const fs = require('fs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
  
@@ -19,6 +20,15 @@ app.get('/saludo/:nombre', function (req, res) {
     res.json({
     'saludo':`Bienvenid@ ${req.params.nombre}`
     })
+    fs.writeFile(
+        `Bienvenida-${req.params.nombre}.txt` , 
+        `Bienvenido ${req.params.nombre}`,
+        (err) => {
+            if (err) 
+              console.log(err);
+            console.log('');
+        }
+    );
 });
 app.get('/edad/:XY', function (req, res) {
     let edad= req.params.XY
@@ -27,10 +37,28 @@ app.get('/edad/:XY', function (req, res) {
             res.json({       
                 'Menor' : `Eres menor de edad con una edad de: ${edad}`
              })
+             fs.writeFile(
+                `menorEdad-${req.params.XY}.txt` , 
+                `Eres menor de edad: tu edad:${req.params.XY}`,
+                (err) => {
+                    if (err) 
+                      console.log(err);
+                    console.log('');
+                }
+            );
         }else{
             res.json({       
-                'Mayor' : `Eres mayor de edad con una edad de: ${edad}`
-        })
+                'Mayor' : `Eres mayor de edad con una edad de: ${edad}`     
+                })
+            fs.writeFile(
+            `edadMayor-${req.params.XY}.txt` , 
+            'Eres mayor de edad: tu edad:'+req.params.XY,
+            (err) => {
+                if (err) 
+                  console.log(err);
+                console.log('');
+            }
+        );
         }
     }else{
         res.json({
